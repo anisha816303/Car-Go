@@ -12,7 +12,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: car-go 
+        working-directory: cargo 
 
     steps:
       - name: Checkout code
