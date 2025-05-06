@@ -3,26 +3,52 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
+const User = require('./models/User'); 
+
 const app = express();
 
-// Middleware
 app.use(cors());
-app.use(express.json()); // Parse incoming JSON
+app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('MongoDB connected'))
 .catch((err) => console.log('MongoDB connection error:', err));
 
-// Example Route
-app.get('/', (req, res) => {
-    res.send('Hello from Backend!');
+
+app.post('/register', async (req, res) => {
+    const { fname,lname,uname, email, password } = req.body;
+    try {
+        const newUser = new User({ fname,lname,uname, email, password });
+        await newUser.save();
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to register user' });
+    }
 });
 
-// Start Server
+app.post('/login', async (req, res) => {
+    const { uname, password } = req.body;
+    
+        try {
+            const user = await User.findOne({ uname });
+    
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+    
+            if (user.password !== password) {
+                return res.status(401).json({ error: 'Invalid password' });
+            }
+    
+            res.status(200).json({ message: 'Login successful', user: { uname: user.uname, email: user.email } });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Login failed' });
+        }
+});
+    
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
