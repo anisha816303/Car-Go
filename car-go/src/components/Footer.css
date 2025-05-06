@@ -1,0 +1,46 @@
+/* Footer.css */
+footer {
+    background: #4caf50; /* Match the gradient start color from App.css */
+    background: linear-gradient(135deg, #4caf50, #81c784);
+    color: #ffffff;
+    padding: 1rem 2rem;
+    text-align: center;
+    position: relative;
+    margin-top: auto;
+    width: 100%;
+    animation: fadeIn 2s ease-in-out;
+  }
+  
+  footer p {
+    margin: 0;
+    font-family: Arial, sans-serif; /* Match font from App.css */
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+  }
+  
+  footer a {
+    color: #ffeb3b; /* Match yellow accent color */
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  footer a:hover {
+    color: #fdd835; /* Match hover color from App.css */
+    text-decoration: underline;
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    animation: slideIn 1.5s ease-out;
+  }
+  
+  @media (max-width: 768px) {
+    footer {
+      padding: 0.8rem 1rem;
+    }
+  }
+  
