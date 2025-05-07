@@ -28,32 +28,34 @@ function LoginPage() {
 
   return (
     <div className="login-page">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          name="uname"
-          type="text"
-          placeholder="Username"
-          value={credentials.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={credentials.password}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-      <p>
-        Don't have an account?{' '}
-        <button type="button" onClick={() => navigate('/register')}>
-          Register
-        </button>
-      </p>
+      <div className="login-box">
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            name="uname"
+            type="text"
+            placeholder="Username"
+            value={credentials.uname}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={credentials.password}
+            onChange={handleChange}
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+        <p>
+          Don't have an account?{' '}
+          <button type="button" onClick={() => navigate('/register')}>
+            Register
+          </button>
+        </p>
+      </div>
     </div>
   );
 }

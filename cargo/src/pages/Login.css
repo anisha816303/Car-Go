@@ -7,5 +7,61 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
-  
+}
+
+.login-box {
+    background: rgba(0, 0, 0, 0.7); /* Transparent black */
+    color: white; /* Text color for contrast */
+    padding: 20px;
+    border-radius: 50px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    width: 300px;
+    text-align: left;
+    position: relative;
+    top: -50px; /* Moves the box slightly upwards */
+    animation: fadeIn 1s ease-in-out; /* Smooth fade-in animation */
+}
+
+.login-box input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+}
+
+.login-box button {
+    width: 50%;
+    padding: 10px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease; /* Smooth hover effect */
+    display: block;
+    margin:20px auto; /* Center the button */
+    
+}
+
+.login-box button:hover {
+    background: #45a049;
+}
+.login-box p{
+  text-align: center;
+  margin: 20px 0;
+  font-size: 14px;
+  color: white;
+}
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px); /* Starts slightly below */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Ends at its original position */
+    }
+}

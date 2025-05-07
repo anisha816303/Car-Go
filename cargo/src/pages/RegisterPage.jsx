@@ -27,15 +27,17 @@ function RegisterPage() {
 
   return (
     <div className="register-page">
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <input name="fname" type="text" placeholder="First Name" required onChange={handleChange} /> <br />
-        <input name="lname" type="text" placeholder="Last Name" required onChange={handleChange} /><br />
-        <input name="uname" type="text" placeholder="Username" required onChange={handleChange} /><br />
-        <input name="email" type="email" placeholder="Email" required onChange={handleChange} /><br />
-        <input name="password" type="password" placeholder="Password" required onChange={handleChange} /><br />
-        <button type="submit">Register</button>
-      </form>
+      <div className="register-box">
+        <h2>Register</h2>
+        <form onSubmit={handleSubmit}>
+          <input name="fname" type="text" placeholder="First Name" required onChange={handleChange} />
+          <input name="lname" type="text" placeholder="Last Name" required onChange={handleChange} />
+          <input name="uname" type="text" placeholder="Username" required onChange={handleChange} />
+          <input name="email" type="email" placeholder="Email" required onChange={handleChange} />
+          <input name="password" type="password" placeholder="Password" required onChange={handleChange} />
+          <button type="submit">Register</button>
+        </form>
+      </div>
     </div>
   );
 }
