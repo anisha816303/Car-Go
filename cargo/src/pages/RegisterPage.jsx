@@ -6,7 +6,7 @@ function RegisterPage() {
   const [formData, setFormData] = useState({
     fname: '',
     lname: '',
-    uname: '',
+    username: '',
     email: '',
     password: ''
   });
@@ -32,7 +32,7 @@ function RegisterPage() {
         <form onSubmit={handleSubmit}>
           <input name="fname" type="text" placeholder="First Name" required onChange={handleChange} />
           <input name="lname" type="text" placeholder="Last Name" required onChange={handleChange} />
-          <input name="uname" type="text" placeholder="Username" required onChange={handleChange} />
+          <input name="username" type="text" placeholder="Username" required onChange={handleChange} />
           <input name="email" type="email" placeholder="Email" required onChange={handleChange} />
           <input name="password" type="password" placeholder="Password" required onChange={handleChange} />
           <button type="submit">Register</button>
