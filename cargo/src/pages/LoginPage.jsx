@@ -7,7 +7,7 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const [credentials, setCredentials] = useState({
-    uname: '',
+    username: '',
     password: ''
   });
 
@@ -32,7 +32,7 @@ function LoginPage() {
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           <input
-            name="uname"
+            name="username"
             type="text"
             placeholder="Username"
             value={credentials.uname}
