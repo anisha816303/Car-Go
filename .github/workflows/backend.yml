@@ -13,7 +13,6 @@ jobs:
     defaults:
       run:
         working-directory: cargo
-    
 
     steps:
       - name: Checkout Code
@@ -28,17 +27,18 @@ jobs:
         run: npm install
 
       - name: Create .env file
-        run: |
-          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
+        run: echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
 
-      - name: Start Server
-        run: npm start &
+      - name: Start Backend Server
+        run: node backend/server.js &
+        env:
+          PORT: 5000
 
-      - name: Wait for server to be ready
-        run: sleep 10
+      - name: Wait for Server to be Ready
+        run: npx wait-on http://localhost:5000
 
-      - name: Install Newman (Postman CLI)
+      - name: Install Newman
         run: npm install -g newman
 
       - name: Run Postman Tests
-        run: newman run ../cargo/src/__tests__/Test-Collection.postman_collection.json --delay-request 1000 --timeout-request 10000
+        run: newman run src/__tests__/Test-Collection.postman_collection.json --delay-request 1000 --timeout-request 10000
