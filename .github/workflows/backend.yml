@@ -36,9 +36,11 @@ jobs:
           PORT: 5000
 
       - name: Wait for Server to be Ready
-        run: npx wait-on http://0.0.0.0:5000
+        run: |
+          echo "Waiting for server..."
+          npx wait-on tcp:localhost:5000
 
-      - name: Show Server Logs (if fails)
+      - name: Show Server Logs on Failure
         if: failure()
         run: cat server.log
 
