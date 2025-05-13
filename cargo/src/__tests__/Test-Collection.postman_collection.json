@@ -27,6 +27,20 @@
 						"type": "text/javascript",
 						"packages": {}
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Pre-request script to create a unique username each time\r",
+							"const random = Math.floor(Math.random() * 100000); // Random number to ensure uniqueness\r",
+							"pm.collectionVariables.set(\"username\", `test${random}`);\r",
+							"pm.collectionVariables.set(\"email\", `test${random}@gmail.com`);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
 				}
 			],
 			"request": {
@@ -34,7 +48,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"fname\": \"Anoushka\",\r\n  \"lname\": \"Arun\",\r\n  \"username\": \"test\",\r\n  \"email\": \"test@gmail.com\",\r\n  \"password\": \"test123\"\r\n}\r\n",
+					"raw": "{\r\n  \"fname\": \"Test\",\r\n  \"lname\": \"Test\",\r\n  \"username\": \"{{username}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"test123\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
