@@ -14,8 +14,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 201\", function () {\r",
-							"    pm.response.to.have.status(201);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Response has user ID\", function () {\r",
@@ -34,7 +34,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"fname\": \"Anoushka\",\r\n  \"lname\": \"Arun\",\r\n  \"username\": \"test4\",\r\n  \"email\": \"test4@gmail.com\",\r\n  \"password\": \"test123\"\r\n}\r\n",
+					"raw": "{\r\n  \"fname\": \"Anoushka\",\r\n  \"lname\": \"Arun\",\r\n  \"username\": \"test\",\r\n  \"email\": \"test@gmail.com\",\r\n  \"password\": \"test123\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -44,6 +44,16 @@
 				"url": "http://localhost:5000/register"
 			},
 			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "username",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
 		}
 	]
 }
