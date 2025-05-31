@@ -60,5 +60,5 @@ jobs:
         run: newman run src/__tests__/Test-Collection.postman_collection.json --delay-request 1000 --timeout-request 10000
         
       - name: Show Server Logs After Tests
-        if: always() 
+        if: always() # <-- always print logs (or use `failure()` to print only on test failure)
         run: cat server.log
