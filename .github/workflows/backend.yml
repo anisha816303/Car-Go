@@ -26,6 +26,15 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Run ESLint
+        run: npx eslint . --ext .js,.jsx,.ts,.tsx
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+
+      - name: Run Artillery Load Test
+        run: npx artillery run load-test.yml
+
       - name: Create .env file
         run: echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
 
