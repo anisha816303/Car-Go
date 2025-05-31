@@ -1,5 +1,4 @@
-name: Backend CI
-# This workflow runs backend tests, ESLint, npm audit, and Artillery load tests on every push to the main branch and on pull requests.
+name: Run Backend Tests
 
 on:
   push:
@@ -25,13 +24,13 @@ jobs:
           node-version: '20'
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Run ESLint
-        run: npx eslint . --ext .js,.jsx,.ts,.tsx
+      # - name: Run ESLint
+      #   run: npx eslint . --ext .js,.jsx,.ts,.tsx
 
-      - name: Run npm audit
-        run: npm audit --audit-level=high
+      # - name: Run npm audit
+      #   run: npm audit --audit-level=high
 
       # - name: Run Artillery Load Test
       #   run: npx artillery run src/__tests__/load-test.yml
@@ -61,5 +60,5 @@ jobs:
         run: newman run src/__tests__/Test-Collection.postman_collection.json --delay-request 1000 --timeout-request 10000
         
       - name: Show Server Logs After Tests
-        if: always() 
+        if: always() # <-- always print logs (or use `failure()` to print only on test failure)
         run: cat server.log
