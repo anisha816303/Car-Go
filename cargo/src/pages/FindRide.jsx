@@ -68,6 +68,7 @@ function FindRide() {
         setMessage(data.error || 'Failed to fetch rides.');
       }
     } catch (err) {
+      console.error('Error fetching rides:', err);
       setMessage('Server error. Please try again.');
     }
   };
