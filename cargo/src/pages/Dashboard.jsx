@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Carousel } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Dashboard.css';
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
   const [darkTheme, setDarkTheme] = useState(false);
@@ -19,7 +19,6 @@ function Dashboard() {
 
   return (
     <div className={`dashboard ${darkTheme ? 'dark' : 'light'}`}>
-      {/* Single Top Navigation Bar */}
       <nav className="top-nav">
         <div className="logo-container">
           <button className="menu-toggle" onClick={toggleSidebar}>
@@ -37,9 +36,6 @@ function Dashboard() {
         </div>
         <div className="nav-right">
           <button className="nav-button">
-            🔔 <span>Notifications</span>
-          </button>
-          <button className="nav-button">
             👤 <span>Profile</span>
           </button>
           <button className="nav-button theme-toggle" onClick={toggleTheme}>
@@ -48,7 +44,6 @@ function Dashboard() {
         </div>
       </nav>
 
-      {/* Side Navigation Bar */}
       <div className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-content">
           <div className="user-section">
@@ -61,24 +56,24 @@ function Dashboard() {
           <nav className="sidebar-nav">
             <h3>Rides</h3>
             <ul>
-              <li><button>🚗 Find a Ride</button></li>
-              <li><button>📍 Offer a Ride</button></li>
-              <li><button>🗺️ My Routes</button></li>
-              <li><button>📅 Scheduled Rides</button></li>
+              <li><button onClick={() => navigate('/find-ride')}>🚗 Find a Ride</button></li>
+              <li><button onClick={() => navigate('/offer-ride')}>📍 Offer a Ride</button></li>
+              <li><button onClick={() => navigate('/my-routes')}>🗺️ My Routes</button></li>
+              <li><button onClick={() => navigate('/scheduled-rides')}>📅 Scheduled Rides</button></li>
             </ul>
             <h3>Account</h3>
             <ul>
-              <li><button>👤 My Profile</button></li>
-              <li><button>⭐ My Ratings</button></li>
-              <li><button>💰 Payments</button></li>
-              <li><button>🎯 Reward Points</button></li>
+              <li><button onClick={() => navigate('/my-profile')}>👤 My Profile</button></li>
+              <li><button onClick={() => navigate('/my-ratings')}>⭐ My Ratings</button></li>
+              <li><button onClick={() => navigate('/payments')}>💰 Payments</button></li>
+              <li><button onClick={() => navigate('/reward-points')}>🎯 Reward Points</button></li>
             </ul>
             <h3>Settings</h3>
             <ul>
-              <li><button>🚗 Vehicle Details</button></li>
-              <li><button>🔔 Notifications</button></li>
-              <li><button>⚙️ Preferences</button></li>
-              <li><button>❓ Help & Support</button></li>
+              <li><button onClick={() => navigate('/vehicle-details')}>🚗 Vehicle Details</button></li>
+              <li><button onClick={() => navigate('/notifications')}>🔔 Notifications</button></li>
+              <li><button onClick={() => navigate('/preferences')}>⚙️ Preferences</button></li>
+              <li><button onClick={() => navigate('/help-support')}>❓ Help & Support</button></li>
             </ul>
           </nav>
         </div>

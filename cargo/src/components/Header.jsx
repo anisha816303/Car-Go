@@ -1,16 +1,27 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './Header.css';
-import logo from '../assets/l2.png'; // Import your logo image
 
-function Header() {
+function Header({ darkTheme, toggleTheme, sidebarOpen, toggleSidebar }) {
   return (
     <header>
-      <div className="logo-container">
-        <img src={logo} alt="Car-Go Logo" className="logo" />
-        <h1>Car-Go</h1>
-      </div>
+      <nav className="top-nav">
+        <div className="logo-container">
+         
+          <img src="/src/assets/logo.png" alt="Car-Go Logo" className="logo" />
+          <h2>Car-Go</h2>
+        </div>
+
+      </nav>
     </header>
   );
 }
+
+Header.propTypes = {
+  darkTheme: PropTypes.bool.isRequired,
+  toggleTheme: PropTypes.func.isRequired,
+  sidebarOpen: PropTypes.bool.isRequired,
+  toggleSidebar: PropTypes.func.isRequired,
+};
 
 export default Header;
