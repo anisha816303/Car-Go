@@ -21,7 +21,8 @@ function RegisterPage() {
       const res = await axios.post('http://localhost:5000/register', formData);
       alert(res.data.message);
     } catch (err) {
-      alert('Registration failed');
+      alert(`Registration failed: ${err.response?.data?.message || err.message || 'Unknown error'}`);
+      console.error('Registration error:', err);
     }
   };
 

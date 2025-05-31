@@ -50,7 +50,7 @@ function LoginPage() {
           <button type="submit">Login</button>
         </form>
         <p>
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <button type="button" onClick={() => navigate('/register')}>
             Register
           </button>

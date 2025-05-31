@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import RegisterPage from '../pages/RegisterPage';
 import axios from 'axios';
+import { vi, describe, test, expect, beforeAll } from 'vitest';
 
 // Mock axios
 vi.mock('axios');

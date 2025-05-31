@@ -7,7 +7,7 @@ import User from './models/User.js'; // Using ES Module import syntax
 dotenv.config();
 
 const app = express();
-
+let process;
 app.use(cors());
 app.use(express.json());
 
