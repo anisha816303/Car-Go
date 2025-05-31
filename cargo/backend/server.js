@@ -8,11 +8,11 @@ import client from 'prom-client';
 dotenv.config();
 
 const app = express();
-let process;
 app.use(cors());
 app.use(express.json());
 
 
+// eslint-disable-next-line no-undef
 mongoose.connect(process.env.MONGODB_URI)
     .then(async () => {console.log('MongoDB connected');
         await User.init(); // Ensure User model is initialized
@@ -70,6 +70,7 @@ app.get('/metrics', async (req, res) => {
   res.end(await client.register.metrics());
 });
 
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 5000;
 app.listen(PORT,'0.0.0.0',() => {
     console.log(`Server is running on port ${PORT}`);

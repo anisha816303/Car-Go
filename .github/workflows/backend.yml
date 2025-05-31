@@ -1,4 +1,5 @@
-name: Run Backend Tests
+name: Backend CI
+# This workflow runs backend tests, ESLint, npm audit, and Artillery load tests on every push to the main branch and on pull requests.
 
 on:
   push:
@@ -26,17 +27,17 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # - name: Run ESLint
-      #   run: npx eslint . --ext .js,.jsx,.ts,.tsx
+      - name: Run ESLint
+        run: npx eslint . --ext .js,.jsx,.ts,.tsx
 
-      # - name: Run npm audit
-      #   run: npm audit --audit-level=high
+      - name: Run npm audit
+        run: npm audit --audit-level=high
 
-      # - name: Run Artillery Load Test
-      #   run: npx artillery run src/__tests__/load-test.yml
+      - name: Run Artillery Load Test
+        run: npx artillery run src/__tests__/load-test.yml
 
       - name: Create .env file
-        run: echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > backend/.env
+        run: echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
 
       - name: Start Backend Server
         run: |
@@ -47,7 +48,7 @@ jobs:
       - name: Wait for Server to be Ready
         run: |
           echo "Waiting for server..."
-          npx wait-on --timeout 60000 tcp:0.0.0.0:5000
+          npx wait-on --timeout 60000 tcp:localhost:5000
 
       - name: Show Server Logs on Failure
         if: failure()
@@ -60,5 +61,5 @@ jobs:
         run: newman run src/__tests__/Test-Collection.postman_collection.json --delay-request 1000 --timeout-request 10000
         
       - name: Show Server Logs After Tests
-        if: always() # <-- always print logs (or use `failure()` to print only on test failure)
+        if: always()
         run: cat server.log
