@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import User from './models/User.js'; // Using ES Module import syntax
+import client from 'prom-client';
 
 dotenv.config();
 
@@ -57,6 +58,16 @@ app.post('/login', async (req, res) => {
         console.error(err);
         res.status(500).json({ error: 'Login failed' });
     }
+});
+
+
+// Prometheus metrics setup
+const collectDefaultMetrics = client.collectDefaultMetrics;
+collectDefaultMetrics();
+
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', client.register.contentType);
+  res.end(await client.register.metrics());
 });
 
 const PORT = process.env.PORT || 5000;

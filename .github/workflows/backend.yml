@@ -1,4 +1,5 @@
-name: Run Backend Tests
+name: Backend CI
+# This workflow runs backend tests, ESLint, npm audit, and Artillery load tests on every push to the main branch and on pull requests.
 
 on:
   push:
@@ -24,7 +25,7 @@ jobs:
           node-version: '20'
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run ESLint
         run: npx eslint . --ext .js,.jsx,.ts,.tsx
@@ -33,7 +34,7 @@ jobs:
         run: npm audit --audit-level=high
 
       - name: Run Artillery Load Test
-        run: npx artillery run ../../cargo/src/__tests__/load-test.yml
+        run: npx artillery run src/__tests__/load-test.yml
 
       - name: Create .env file
         run: echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
@@ -60,5 +61,5 @@ jobs:
         run: newman run src/__tests__/Test-Collection.postman_collection.json --delay-request 1000 --timeout-request 10000
         
       - name: Show Server Logs After Tests
-        if: always() # <-- always print logs (or use `failure()` to print only on test failure)
+        if: always() 
         run: cat server.log
