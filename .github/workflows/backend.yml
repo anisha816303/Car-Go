@@ -36,7 +36,7 @@ jobs:
       #   run: npx artillery run src/__tests__/load-test.yml
 
       - name: Create .env file
-        run: echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
+        run: echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > backend/.env
 
       - name: Start Backend Server
         run: |
@@ -47,7 +47,7 @@ jobs:
       - name: Wait for Server to be Ready
         run: |
           echo "Waiting for server..."
-          npx wait-on --timeout 60000 tcp:127.0.0.1:5000
+          npx wait-on --timeout 60000 tcp:0.0.0.0:5000
 
       - name: Show Server Logs on Failure
         if: failure()
