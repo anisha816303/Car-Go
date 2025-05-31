@@ -25,7 +25,7 @@ app.post('/register', async (req, res) => {
     try {
         const newUser = new User({ fname, lname, username, email, password });
         await newUser.save();
-        res.status(201).json({ message: 'User registered successfully' });
+        res.status(201).json({ userId: newUser._id, message: 'User registered successfully' });
     } 
 catch (err) {
     if (err.code === 11000) {
