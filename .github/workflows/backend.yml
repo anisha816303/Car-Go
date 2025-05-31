@@ -47,7 +47,7 @@ jobs:
       - name: Wait for Server to be Ready
         run: |
           echo "Waiting for server..."
-          npx wait-on tcp:0.0.0.0:5000
+          npx wait-on --timeout 60000 tcp:127.0.0.1:5000
 
       - name: Show Server Logs on Failure
         if: failure()
