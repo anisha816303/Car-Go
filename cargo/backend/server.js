@@ -13,7 +13,9 @@ app.use(express.json());
 
 
 mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('MongoDB connected'))
+    .then(async () => {console.log('MongoDB connected');
+        await User.init(); // Ensure User model is initialized
+    })
     .catch((err) => console.log('MongoDB connection error:', err));
 
 
@@ -24,10 +26,16 @@ app.post('/register', async (req, res) => {
         const newUser = new User({ fname, lname, username, email, password });
         await newUser.save();
         res.status(201).json({ message: 'User registered successfully' });
-    } catch (err) {
-        console.error(err);
+    } 
+catch (err) {
+    if (err.code === 11000) {
+        res.status(409).json({ error: 'Username already exists' });
+    } else {
         res.status(500).json({ error: 'Failed to register user' });
     }
+}
+
+       
 });
 
 
