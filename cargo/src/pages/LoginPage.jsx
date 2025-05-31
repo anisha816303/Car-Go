@@ -20,6 +20,10 @@ function LoginPage() {
     try {
       const res = await axios.post('http://localhost:5000/login', credentials);
       alert(res.data.message);
+      // Store userId in localStorage for authentication
+      if (res.data.user?._id) {
+        localStorage.setItem('userId', res.data.user._id);
+      }
       navigate('/dashboard');
     } catch (err) {
       alert(err.response?.data?.error || 'Login failed');

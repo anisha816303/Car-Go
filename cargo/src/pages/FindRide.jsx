@@ -2,17 +2,26 @@ import React, { useState } from 'react';
 import './FindRide.css';
 
 const demoLocations = [
+  'Nagarbhavi',
+  'Malleswaram',
+  'Rajajinagar',
+  'Indiranagar',
+  'Jayanagar',
   'Bangalore',
-  'Mumbai',
-  'Delhi',
-  'Chennai',
-  'Hyderabad',
-  'Pune',
-  'Kolkata',
-  'Ahmedabad',
-  'Gurgaon',
-  'Noida',
-  'Current Location',
+  'Bangalore East',
+  'Bangalore South',
+  'Bannergatta Road',  
+  'Bangalore North',
+  'Bangalore West',
+  'Bangalore Central',
+  'BTM Layout',
+  'Electronic City',
+  'Koramangala',
+  'Whitefield',
+  'Hosur Road',
+  'Sarjapur Road',
+  'MG Road',
+  'Electronic City Phase 1'
 ];
 
 function FindRide() {
@@ -21,7 +30,8 @@ function FindRide() {
   const [autoDetecting, setAutoDetecting] = useState(false);
   const [showSourceDropdown, setShowSourceDropdown] = useState(false);
   const [showDestDropdown, setShowDestDropdown] = useState(false);
-
+  const [rides, setRides] = useState([]);
+  const [message, setMessage] = useState('');
   // Filtered options for autocomplete
   const filteredSource = demoLocations.filter(
     loc => loc.toLowerCase().includes(source.toLowerCase()) && loc !== destination
@@ -41,6 +51,26 @@ function FindRide() {
 
   // Placeholder for map preview
   const showMap = source && destination;
+
+  const handleFindRide = async () => {
+    setMessage('');
+    setRides([]);
+    try {
+      const res = await fetch(`http://localhost:5000/rides?source=${encodeURIComponent(source)}&destination=${encodeURIComponent(destination)}`);
+      const data = await res.json();
+      if (res.ok) {
+        if (data.length === 0) {
+          setMessage('No rides found.');
+        } else {
+          setRides(data);
+        }
+      } else {
+        setMessage(data.error || 'Failed to fetch rides.');
+      }
+    } catch (err) {
+      setMessage('Server error. Please try again.');
+    }
+  };
 
   return (
     <div className="find-ride-page">
@@ -74,8 +104,15 @@ function FindRide() {
           {showSourceDropdown && filteredSource.length > 0 && (
             <ul className="autocomplete-dropdown">
               {filteredSource.map(loc => (
-                <li key={loc} onMouseDown={() => { setSource(loc); setShowSourceDropdown(false); }}>
-                  {loc}
+                <li key={loc}>
+                  <button
+                    type="button"
+                    className="autocomplete-option"
+                    style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer' }}
+                    onMouseDown={() => { setSource(loc); setShowSourceDropdown(false); }}
+                  >
+                    {loc}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -99,8 +136,15 @@ function FindRide() {
           {showDestDropdown && filteredDest.length > 0 && (
             <ul className="autocomplete-dropdown">
               {filteredDest.map(loc => (
-                <li key={loc} onMouseDown={() => { setDestination(loc); setShowDestDropdown(false); }}>
-                  {loc}
+                <li key={loc}>
+                  <button
+                    type="button"
+                    className="autocomplete-option"
+                    style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer' }}
+                    onMouseDown={() => { setDestination(loc); setShowDestDropdown(false); }}
+                  >
+                    {loc}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -120,9 +164,17 @@ function FindRide() {
             <span>Map preview will appear here</span>
           )}
         </div>
-        <button type="button" style={{ marginTop: 18 }} disabled={!showMap}>
+        <button type="button" style={{ marginTop: 18 }} disabled={!showMap} onClick={handleFindRide}>
           Find Ride
         </button>
+        {message && <div style={{ marginTop: 16, color: 'red' }}>{message}</div>}
+        <ul style={{ marginTop: 16 }}>
+          {rides.map(ride => (
+            <li key={ride._id}>
+              {ride.source} to {ride.destination} offered by {ride.user?.fname} {ride.user?.lname}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
