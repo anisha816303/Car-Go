@@ -33,7 +33,7 @@ jobs:
         run: npm audit --audit-level=high
 
       - name: Run Artillery Load Test
-        run: npx artillery run load-test.yml
+        run: npx artillery run ../../cargo/src/__tests__/load-test.yml
 
       - name: Create .env file
         run: echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
