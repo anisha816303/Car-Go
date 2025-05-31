@@ -1,12 +1,30 @@
 import React, { useState} from 'react';
-import { Carousel } from 'react-bootstrap';
+// import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Dashboard.css';
 import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
+  const cardData = [
+  {
+    src: '/src/assets/save_money_on_travel.png',
+    title: 'Save Money on Travel',
+    desc: 'Split costs and reduce your daily commute expenses',
+  },
+  {
+    src: '/src/assets/carbon_footprint.png',
+    title: 'Reduce Carbon Footprint',
+    desc: 'Help the environment by sharing rides',
+  },
+  {
+    src: '/src/assets/community.png',
+    title: 'Build Community',
+    desc: 'Connect with people going your way',
+  },
+];
   const [darkTheme, setDarkTheme] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [current, setCurrent] = useState(0);
   const navigate = useNavigate();
 
   const toggleTheme = () => {
@@ -16,6 +34,9 @@ function Dashboard() {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
+
+  const nextCard = () => setCurrent((current + 1) % cardData.length);
+  const prevCard = () => setCurrent((current - 1 + cardData.length) % cardData.length);
 
   return (
     <div className={`dashboard ${darkTheme ? 'dark' : 'light'}`}>
@@ -81,42 +102,16 @@ function Dashboard() {
       {/* Main Content */}
       <main className={`main-content ${!sidebarOpen ? 'shifted' : ''}`}>
         <h1 className="welcome-message">Welcome to Car-Go Dashboard</h1>
-        <div className="carousel-container">
-          <Carousel>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="/src/assets/l1.png"
-                alt="Carpooling Benefits"
-              />
-              <Carousel.Caption>
-                <h3>Save Money on Travel</h3>
-                <p>Split costs and reduce your daily commute expenses</p>
-              </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="/src/assets/l2.png"
-                alt="Environmental Impact"
-              />
-              <Carousel.Caption>
-                <h3>Reduce Carbon Footprint</h3>
-                <p>Help the environment by sharing rides</p>
-              </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="/src/assets/logo.png"
-                alt="Community"
-              />
-              <Carousel.Caption>
-                <h3>Build Community</h3>
-                <p>Connect with people going your way</p>
-              </Carousel.Caption>
-            </Carousel.Item>
-          </Carousel>
+        <div className="card-carousel-container">
+          <button className="carousel-arrow left" onClick={prevCard}>&lt;</button>
+          <div className="carousel-card">
+            <img src={cardData[current].src} alt={cardData[current].title} />
+            <div className="carousel-card-caption">
+              <h3>{cardData[current].title}</h3>
+              <p>{cardData[current].desc}</p>
+            </div>
+          </div>
+          <button className="carousel-arrow right" onClick={nextCard}>&gt;</button>
         </div>
         <section className="info-section">
           <div className="info-cards">

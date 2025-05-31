@@ -33,9 +33,6 @@ jobs:
       - name: Run npm audit
         run: npm audit --audit-level=high
 
-      - name: Run Artillery Load Test
-        run: npx artillery run src/__tests__/load-test.yml
-
       - name: Create .env file
         run: echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
 
@@ -53,6 +50,9 @@ jobs:
       - name: Show Server Logs on Failure
         if: failure()
         run: cat server.log
+
+      - name: Run Artillery Load Test
+        run: npx artillery run src/__tests__/load-test.yml
 
       - name: Install Newman
         run: npm install -g newman
