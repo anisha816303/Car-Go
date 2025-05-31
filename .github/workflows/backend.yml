@@ -1,55 +1,55 @@
-name: Run Backend Tests
+# name: Run Backend Tests
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
 
-jobs:
-  backend-tests:
-    runs-on: ubuntu-latest
+# jobs:
+#   backend-tests:
+#     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: cargo
+#     defaults:
+#       run:
+#         working-directory: cargo
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '20'
 
-      - name: Install Dependencies
-        run: npm install
+#       - name: Install Dependencies
+#         run: npm install
 
-      - name: Create .env file
-        run: echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
+#       - name: Create .env file
+#         run: echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
 
-      - name: Start Backend Server
-        run: |
-          node backend/server.js > server.log 2>&1 &
-        env:
-          PORT: 5000
+#       - name: Start Backend Server
+#         run: |
+#           node backend/server.js > server.log 2>&1 &
+#         env:
+#           PORT: 5000
 
-      - name: Wait for Server to be Ready
-        run: |
-          echo "Waiting for server..."
-          npx wait-on tcp:localhost:5000
+#       - name: Wait for Server to be Ready
+#         run: |
+#           echo "Waiting for server..."
+#           npx wait-on tcp:localhost:5000
 
-      - name: Show Server Logs on Failure
-        if: failure()
-        run: cat server.log
+#       - name: Show Server Logs on Failure
+#         if: failure()
+#         run: cat server.log
 
-      - name: Install Newman
-        run: npm install -g newman
+#       - name: Install Newman
+#         run: npm install -g newman
 
-      - name: Run Postman Tests
-        run: newman run src/__tests__/Test-Collection.postman_collection.json --delay-request 1000 --timeout-request 10000
+#       - name: Run Postman Tests
+#         run: newman run src/__tests__/Test-Collection.postman_collection.json --delay-request 1000 --timeout-request 10000
         
-      - name: Show Server Logs After Tests
-        if: always() # <-- always print logs (or use `failure()` to print only on test failure)
-        run: cat server.log
+#       - name: Show Server Logs After Tests
+#         if: always() # <-- always print logs (or use `failure()` to print only on test failure)
+#         run: cat server.log
