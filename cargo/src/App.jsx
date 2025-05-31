@@ -17,7 +17,6 @@ import VehicleDetails from './pages/VehicleDetails.jsx';
 import Notifications from './pages/Notifications.jsx';
 import Preferences from './pages/Preferences.jsx';
 import HelpSupport from './pages/HelpSupport.jsx';
-import HomePage from './pages/HomePage.jsx';
 import WelcomePage from './pages/WelcomePage.jsx';
 import './App.css';
 
@@ -27,7 +26,6 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<WelcomePage />} />
-        <Route path="/home" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
