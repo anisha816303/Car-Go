@@ -152,6 +152,22 @@ app.delete('/rides/:id', async (req, res) => {
     }
 });
 
+app.put('/rides/:id', async (req, res) => {
+    try {
+        const updates = req.body;
+        const ride = await Ride.findByIdAndUpdate(
+            req.params.id,
+            { $set: updates },
+            { new: true, runValidators: true }
+        );
+        if (!ride) return res.status(404).json({ error: 'Ride not found' });
+        res.json({ message: 'Ride updated', ride });
+    } catch (err) {
+        console.error('Error updating ride:', err);
+        res.status(500).json({ error: 'Failed to update ride' });
+    }
+});
+
 // Prometheus metrics setup
 const collectDefaultMetrics = client.collectDefaultMetrics;
 collectDefaultMetrics();

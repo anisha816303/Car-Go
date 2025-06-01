@@ -11,6 +11,10 @@ function MyRides() {
   const navigate = useNavigate();
   const userId = getUserId();
 
+  const [editingRide, setEditingRide] = useState(null);
+  const [editSource, setEditSource] = useState('');
+  const [editDestination, setEditDestination] = useState('');
+
   useEffect(() => {
     if (!userId) return;
     setLoading(true);
@@ -50,9 +54,31 @@ function MyRides() {
     }
   };
 
-  const handleUpdate = (rideId) => {
-    // Navigate to OfferRide page with rideId as param or state
-    navigate(`/offer-ride/${rideId}`);
+    const handleUpdate = (ride) => {
+    setEditingRide(ride);
+    setEditSource(ride.source);
+    setEditDestination(ride.destination);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`http://localhost:5000/rides/${editingRide._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ source: editSource, destination: editDestination }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setRides(rides.map(r => r._id === editingRide._id ? data.ride : r));
+        setMessage('Ride updated.');
+        setEditingRide(null);
+      } else {
+        setMessage('Failed to update ride.');
+      }
+    } catch {
+      setMessage('Server error.');
+    }
   };
 
   return (
@@ -66,6 +92,26 @@ function MyRides() {
       </button>
       {loading ? <div>Loading...</div> : null}
       {message && <div style={{ color: 'red', marginBottom: 12 }}>{message}</div>}
+      {editingRide && (
+        <form onSubmit={handleEditSubmit} style={{ background: '#333', padding: 18, borderRadius: 12, marginBottom: 18 }}>
+          <h4>Edit Ride</h4>
+          <div>
+            <label>Source:</label>
+            <input value={editSource} onChange={e => setEditSource(e.target.value)} required style={{ marginLeft: 8 }} />
+          </div>
+          <div style={{ marginTop: 8 }}>
+            <label>Destination:</label>
+            <input value={editDestination} onChange={e => setEditDestination(e.target.value)} required style={{ marginLeft: 8 }} />
+          </div>
+          <button type="submit" style={{ marginTop: 12, marginRight: 8, borderRadius: 18, padding: '6px 18px', background: '#1976d2', color: '#fff', border: 'none', cursor: 'pointer' }}>
+            Save
+          </button>
+          <button type="button" style={{ marginTop: 12, borderRadius: 18, padding: '6px 18px', background: '#888', color: '#fff', border: 'none', cursor: 'pointer' }}
+            onClick={() => setEditingRide(null)}>
+            Cancel
+          </button>
+        </form>
+      )}
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {rides.map((ride) => {
           const isCurrent = currentRide && ride._id === currentRide._id;
@@ -90,7 +136,7 @@ function MyRides() {
                 <div style={{ marginTop: 10 }}>
                   <button
                     style={{ marginRight: 10, borderRadius: 18, padding: '6px 18px', background: '#1976d2', color: '#fff', border: 'none', cursor: 'pointer' }}
-                    onClick={() => handleUpdate(ride._id)}
+                    onClick={() => handleUpdate(ride)}
                   >
                     Update
                   </button>

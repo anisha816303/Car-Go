@@ -13,9 +13,8 @@ const rideSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
-  },
-  timestamps: true
-});
+  }
+}, { timestamps: true });
 
 const Ride = mongoose.model('Ride', rideSchema);
 
