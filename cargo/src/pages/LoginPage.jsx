@@ -23,6 +23,7 @@ function LoginPage() {
       // Store userId in localStorage for authentication
       if (res.data.user?._id) {
         localStorage.setItem('userId', res.data.user._id);
+        console.log('User ID stored:', res.data.user._id);
       }
       navigate('/dashboard');
     } catch (err) {

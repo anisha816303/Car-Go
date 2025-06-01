@@ -21,7 +21,7 @@ import './App.css';
 
 function App() {
   return (
-    <>
+    <div className="app-bg-bubbles" style={{ minHeight: '100vh', position: 'relative' }}>
       <Routes>
         <Route path="/" element={<WelcomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -42,7 +42,7 @@ function App() {
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <Footer />
-    </>
+    </div>
   );
 }
 

@@ -14,3 +14,26 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+/* Decorative eco bubbles for all pages */
+.app-bg-bubbles::before, .app-bg-bubbles::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  z-index: 1;
+  opacity: 0.13;
+}
+.app-bg-bubbles::before {
+  width: 220px;
+  height: 220px;
+  background: #43a047;
+  left: -80px;
+  top: -60px;
+}
+.app-bg-bubbles::after {
+  width: 140px;
+  height: 140px;
+  background: #2d6cdf;
+  right: -40px;
+  bottom: -30px;
+}
