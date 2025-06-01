@@ -12,12 +12,8 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@opentelemetry/api": "^1.4.1",
-    "artillery": "^2.0.21",
-=======
     "artillery": "^2.0.23",
->>>>>>> 973168572b3b376c094af9e5312d8478fe27cb99
     "axios": "^1.9.0",
     "bootstrap": "^5.3.6",
     "cors": "^2.8.5",
