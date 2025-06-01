@@ -129,6 +129,44 @@ app.delete('/user/:id', async (req, res) => {
     }
 });
 
+app.get('/user/:id/rides', async (req, res) => {
+    try {
+        const rides = await Ride.find({ user: req.params.id })
+            .populate('user', 'fname lname username')
+            .sort({ createdAt: -1 }); // Most recent first
+        res.status(200).json(rides);
+    } catch (err) {
+        console.error('Error fetching user rides:', err);
+        res.status(500).json({ error: 'Failed to fetch user rides' });
+    }
+});
+
+app.delete('/rides/:id', async (req, res) => {
+    try {
+        const ride = await Ride.findByIdAndDelete(req.params.id);
+        if (!ride) return res.status(404).json({ error: 'Ride not found' });
+        res.json({ message: 'Ride deleted' });
+    } catch (err) {
+        console.error('Error deleting ride:', err);
+        res.status(500).json({ error: 'Failed to delete ride' });
+    }
+});
+
+app.put('/rides/:id', async (req, res) => {
+    try {
+        const updates = req.body;
+        const ride = await Ride.findByIdAndUpdate(
+            req.params.id,
+            { $set: updates },
+            { new: true, runValidators: true }
+        );
+        if (!ride) return res.status(404).json({ error: 'Ride not found' });
+        res.json({ message: 'Ride updated', ride });
+    } catch (err) {
+        console.error('Error updating ride:', err);
+        res.status(500).json({ error: 'Failed to update ride' });
+    }
+});
 
 // Prometheus metrics setup
 const collectDefaultMetrics = client.collectDefaultMetrics;
