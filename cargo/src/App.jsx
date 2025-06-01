@@ -6,7 +6,7 @@ import RegisterPage from './pages/RegisterPage.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import FindRide from './pages/FindRide.jsx';
 import OfferRide from './pages/OfferRide.jsx';
-import MyRoutes from './pages/MyRoutes.jsx';
+import MyRoutes from './pages/MyRides.jsx';
 import ScheduledRides from './pages/ScheduledRides.jsx';
 import MyProfile from './pages/MyProfile.jsx';
 import MyRatings from './pages/MyRatings.jsx';

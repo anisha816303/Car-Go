@@ -89,6 +89,47 @@ app.get('/rides', async (req, res) => {
     }
 });
 
+// User profile endpoints
+app.get('/user/:id', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('-password');
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        res.json(user);
+    } catch (err) {
+        console.error('Error fetching user:', err);
+        res.status(500).json({ error: 'Failed to fetch user' });
+    }
+});
+
+app.put('/user/:id', async (req, res) => {
+    try {
+        const updates = req.body;
+        if (updates.password) delete updates.password; // Prevent password change here
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { $set: updates },
+            { new: true, runValidators: true, select: '-password' }
+        );
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        res.json({ message: 'Profile updated', user });
+    } catch (err) {
+        console.error('Error updating user:', err);
+        res.status(500).json({ error: 'Failed to update user' });
+    }
+});
+
+app.delete('/user/:id', async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        res.json({ message: 'User deleted' });
+    } catch (err) {
+        console.error('Error deleting user:', err);
+        res.status(500).json({ error: 'Failed to delete user' });
+    }
+});
+
+
 // Prometheus metrics setup
 const collectDefaultMetrics = client.collectDefaultMetrics;
 collectDefaultMetrics();
