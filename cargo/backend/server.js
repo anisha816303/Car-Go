@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import User from './models/User.js'; // Using ES Module import syntax
 import client from 'prom-client';
 import Ride from './models/rides.js';
+import Vehicle from './models/Vehicle.js'; // Import the Vehicle model
+import multer from 'multer';
 dotenv.config();
 
 const app = express();
@@ -16,7 +18,8 @@ app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI)
     .then(async () => {console.log('MongoDB connected');
         await User.init();
-        await Ride.init(); // Ensure Ride model is initialized
+        await Ride.init();
+        await Vehicle.init(); 
     })
     .catch((err) => console.log('MongoDB connection error:', err));
 
@@ -166,6 +169,53 @@ app.put('/rides/:id', async (req, res) => {
         console.error('Error updating ride:', err);
         res.status(500).json({ error: 'Failed to update ride' });
     }
+});
+
+// ...existing code...
+
+// Multer setup for image uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads/vehicles/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname.replace(/\s+/g, ''));
+  }
+});
+const upload = multer({ storage });
+
+// Serve uploaded images statically
+app.use('/uploads/vehicles', express.static('uploads/vehicles'));
+
+// Add a vehicle
+app.post('/user/:id/vehicles', upload.single('image'), async (req, res) => {
+  try {
+    const { make, model, number } = req.body;
+    const imageUrl = req.file ? `/uploads/vehicles/${req.file.filename}` : '';
+    const vehicle = new Vehicle({
+      user: req.params.id,
+      make,
+      model,
+      number,
+      imageUrl
+    });
+    await vehicle.save();
+    res.status(201).json({ message: 'Vehicle added', vehicle });
+  } catch (err) {
+    console.error('Error adding vehicle:', err);
+    res.status(500).json({ error: 'Failed to add vehicle' });
+  }
+});
+
+// Get all vehicles for a user
+app.get('/user/:id/vehicles', async (req, res) => {
+  try {
+    const vehicles = await Vehicle.find({ user: req.params.id }).sort({ createdAt: -1 });
+    res.json(vehicles);
+  } catch (err) {
+    console.error('Error fetching vehicles:', err);
+    res.status(500).json({ error: 'Failed to fetch vehicles' });
+  }
 });
 
 // Prometheus metrics setup

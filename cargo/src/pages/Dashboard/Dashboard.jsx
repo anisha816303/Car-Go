@@ -1,5 +1,4 @@
 import React, { useState} from 'react';
-// import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Dashboard.css';
 import { useNavigate } from 'react-router-dom';
@@ -7,17 +6,17 @@ import { useNavigate } from 'react-router-dom';
 function Dashboard() {
   const cardData = [
   {
-    src: '/src/assets/save_money_on_travel.png',
+    src: '/assets/save_money_on_travel.png',
     title: 'Save Money on Travel',
     desc: 'Split costs and reduce your daily commute expenses',
   },
   {
-    src: '/src/assets/carbon_footprint.png',
+    src: '/assets/carbon_footprint.png',
     title: 'Reduce Carbon Footprint',
     desc: 'Help the environment by sharing rides',
   },
   {
-    src: '/src/assets/community.png',
+    src: '/assets/community.png',
     title: 'Build Community',
     desc: 'Connect with people going your way',
   },
@@ -45,7 +44,7 @@ function Dashboard() {
           <button className="menu-toggle" onClick={toggleSidebar}>
             {sidebarOpen ? '✕' : '☰'}
           </button>
-          <img src="/src/assets/logo.png" alt="Car-Go Logo" className="logo" />
+          <img src="/assets/logo.png" alt="Car-Go Logo" className="logo" />
           <h2>Car-Go</h2>
         </div>
         <div className="nav-center">
@@ -79,7 +78,7 @@ function Dashboard() {
             <ul>
               <li><button onClick={() => navigate('/find-ride')}>🚗 Find a Ride</button></li>
               <li><button onClick={() => navigate('/offer-ride')}>📍 Offer a Ride</button></li>
-              <li><button onClick={() => navigate('/my-routes')}>🗺️ My Routes</button></li>
+              <li><button onClick={() => navigate('/my-routes')}>🗺️ My Rides</button></li>
               <li><button onClick={() => navigate('/scheduled-rides')}>📅 Scheduled Rides</button></li>
             </ul>
             <h3>Account</h3>

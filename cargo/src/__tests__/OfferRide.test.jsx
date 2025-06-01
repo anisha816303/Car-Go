@@ -13,6 +13,7 @@ describe('OfferRide', () => {
     expect(screen.getByPlaceholderText(/Enter source/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/Enter destination/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Offer Ride/i })).toBeInTheDocument();
+    expect(screen.getByAltText(/Map Preview/i)).toBeInTheDocument();
   });
 
   test('shows error if not logged in', async () => {

@@ -18,7 +18,7 @@ function MyRides() {
   useEffect(() => {
     if (!userId) return;
     setLoading(true);
-    fetch(`${import.meta.env.VITE_API_URL}/user/${userId}/rides`)
+    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/user/${userId}/rides`)
       .then(res => res.json())
       .then(data => {
         setRides(data);
@@ -42,7 +42,7 @@ function MyRides() {
   const handleDelete = async (rideId) => {
     if (!window.confirm('Delete this ride?')) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/rides/${rideId}`, { method: 'DELETE' });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/rides/${rideId}`, { method: 'DELETE' });
       if (res.ok) {
         setRides(rides.filter(r => r._id !== rideId));
         setMessage('Ride deleted.');
@@ -63,7 +63,7 @@ function MyRides() {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/rides/${editingRide._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/rides/${editingRide._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ source: editSource, destination: editDestination }),
