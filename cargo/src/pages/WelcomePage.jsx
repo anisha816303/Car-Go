@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './WelcomePage.css';
 function WelcomePage() {
     const navigate = useNavigate();
+    const [darkTheme, setDarkTheme] = useState(false);
+    const toggleTheme = () => setDarkTheme((prev) => !prev);
   
     return (
-      <main className="welcome-page">
+      <main className={`welcome-page ${darkTheme ? 'dark' : 'light'}`}>
         <section className="hero">
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
+            <button className="theme-toggle" onClick={toggleTheme}>
+              {darkTheme ? 'Light Mode' : 'Dark Mode'}
+            </button>
+          </div>
           <h1 className="hero-title">
             Welcome to <p><span className="highlight">Car-Go</span></p>
           </h1>
