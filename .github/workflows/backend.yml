@@ -63,3 +63,7 @@ jobs:
       - name: Show Server Logs After Tests
         if: always()
         run: cat server.log
+
+      - name: Deploy to Render
+        if: github.ref == 'refs/heads/main'
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
