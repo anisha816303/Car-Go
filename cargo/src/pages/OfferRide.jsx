@@ -128,8 +128,15 @@ function OfferRide() {
           {showDestDropdown && filteredDest.length > 0 && (
             <ul className="autocomplete-dropdown">
               {filteredDest.map(loc => (
-                <li key={loc} onMouseDown={() => { setDestination(loc); setShowDestDropdown(false); }}>
-                  {loc}
+                <li key={loc}>
+                  <button
+                    type="button"
+                    className="autocomplete-option"
+                    style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer' }}
+                    onClick={() => { setDestination(loc); setShowDestDropdown(false); }}
+                  >
+                    {loc}
+                  </button>
                 </li>
               ))}
             </ul>
