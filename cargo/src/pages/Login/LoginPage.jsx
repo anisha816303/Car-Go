@@ -20,6 +20,7 @@ function LoginPage() {
     try {
       const res = await axios.post('http://localhost:5000/login', credentials);
       alert(res.data.message);
+      console.log('Login successful:', res.data);
       // Store userId in localStorage for authentication
       if (res.data.user?._id) {
         localStorage.setItem('userId', res.data.user._id);
