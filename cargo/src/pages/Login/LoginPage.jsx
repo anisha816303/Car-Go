@@ -18,7 +18,7 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/login', credentials);
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/login`, credentials);
       alert(res.data.message);
       console.log('Login successful:', res.data);
       // Store userId in localStorage for authentication

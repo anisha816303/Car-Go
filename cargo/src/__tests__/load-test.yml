@@ -17,3 +17,9 @@ scenarios:
             username: "user_{{ $randomInt(1,1000000) }}"
             email: "testuser{{ $randomInt(1,1000000) }}@example.com"
             password: "password123"
+      - post:
+          url: "/rides"
+          json:
+            source: "BTM Layout"
+            destination: "Koramangala"
+            user: "USER_ID_HERE"

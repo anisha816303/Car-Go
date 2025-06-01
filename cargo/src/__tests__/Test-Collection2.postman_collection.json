@@ -1,0 +1,77 @@
+{
+  "info": {
+    "name": "Car-Go Ride API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fname\": \"Test\",\n  \"lname\": \"User\",\n  \"username\": \"testuser1\",\n  \"email\": \"testuser1@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": { "raw": "http://localhost:5000/register", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["register"] }
+      }
+    },
+    {
+      "name": "Login User",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"testuser1\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": { "raw": "http://localhost:5000/login", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["login"] }
+      }
+    },
+    {
+      "name": "Add Ride",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"source\": \"Indiranagar\",\n  \"destination\": \"Whitefield\",\n  \"user\": \"683b429591e125a09eace7d1\"\n}"
+        },
+        "url": { "raw": "http://localhost:5000/rides", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["rides"] }
+      }
+    },
+    {
+      "name": "Get All Rides",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:5000/rides", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["rides"] }
+      }
+    },
+    {
+      "name": "Get User Rides",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:5000/user/683b429591e125a09eace7d1/rides", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["user", "{{userId}}", "rides"] }
+      }
+    },
+    {
+      "name": "Update Ride",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"source\": \"BTM Layout\",\n  \"destination\": \"Koramangala\"\n}"
+        },
+        "url": { "raw": "http://localhost:5000/rides/683c5ae4d39424270f0c5b8f", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["rides", "{{rideId}}"] }
+      }
+    },
+    {
+      "name": "Delete Ride",
+      "request": {
+        "method": "DELETE",
+        "url": { "raw": "http://localhost:5000/rides/683c5ae4d39424270f0c5b8f", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["rides", "{{rideId}}"] }
+      }
+    }
+  ]
+}

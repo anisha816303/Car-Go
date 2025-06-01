@@ -56,7 +56,7 @@ function FindRide() {
     setMessage('');
     setRides([]);
     try {
-      const res = await fetch(`http://localhost:5000/rides?source=${encodeURIComponent(source)}&destination=${encodeURIComponent(destination)}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/rides?source=${encodeURIComponent(source)}&destination=${encodeURIComponent(destination)}`);
       const data = await res.json();
       if (res.ok) {
         if (data.length === 0) {
