@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import RegisterPage from '../pages/RegisterPage';
+import RegisterPage from '../pages/Register/RegisterPage';
 import axios from 'axios';
 import { vi, describe, test, expect, beforeAll } from 'vitest';
 

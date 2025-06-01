@@ -7,7 +7,7 @@ config:
 scenarios:
   - flow:
       - get:
-          url: "/home"  
+          url: "/welcome"  
 
       - post:
           url: "/register"
