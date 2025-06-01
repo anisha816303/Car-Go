@@ -171,8 +171,6 @@ app.put('/rides/:id', async (req, res) => {
     }
 });
 
-// ...existing code...
-
 // Multer setup for image uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

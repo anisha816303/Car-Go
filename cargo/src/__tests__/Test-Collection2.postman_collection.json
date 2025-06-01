@@ -51,7 +51,7 @@
       "name": "Get User Rides",
       "request": {
         "method": "GET",
-        "url": { "raw": "http://localhost:5000/user/683b429591e125a09eace7d1/rides", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["user", "{{userId}}", "rides"] }
+        "url": { "raw": "http://localhost:5000/user/683b429591e125a09eace7d1/rides", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["user", "683b429591e125a09eace7d1", "rides"] }
       }
     },
     {
@@ -63,14 +63,14 @@
           "mode": "raw",
           "raw": "{\n  \"source\": \"BTM Layout\",\n  \"destination\": \"Koramangala\"\n}"
         },
-        "url": { "raw": "http://localhost:5000/rides/683c5ae4d39424270f0c5b8f", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["rides", "{{rideId}}"] }
+        "url": { "raw": "http://localhost:5000/rides/683c5ae4d39424270f0c5b8f", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["rides", "683c5ae4d39424270f0c5b8f"] }
       }
     },
     {
       "name": "Delete Ride",
       "request": {
         "method": "DELETE",
-        "url": { "raw": "http://localhost:5000/rides/683c5ae4d39424270f0c5b8f", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["rides", "{{rideId}}"] }
+        "url": { "raw": "http://localhost:5000/rides/683c5ae4d39424270f0c5b8f", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["rides", "683c5ae4d39424270f0c5b8f"] }
       }
     }
   ]
