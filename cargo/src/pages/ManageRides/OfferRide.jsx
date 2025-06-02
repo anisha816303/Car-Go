@@ -160,6 +160,7 @@ function OfferRide() {
         min={1}
         max={8}
         value={seats}
+        placeholder="Enter number of seats available"
         onChange={e => setSeats(Number(e.target.value))}
         style={{ width: '100%', height: 40, marginBottom: 16, padding: '0 10px' }}
       />
