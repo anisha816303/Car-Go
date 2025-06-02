@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import OfferRide from '../pages/ManageRides/OfferRide.jsx';
 import { describe, test, expect, beforeEach } from 'vitest';
 import '@testing-library/jest-dom';
