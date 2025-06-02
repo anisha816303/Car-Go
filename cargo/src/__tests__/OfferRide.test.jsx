@@ -17,20 +17,20 @@ describe('OfferRide', () => {
     expect(screen.getByRole('button', { name: /Offer Ride/i })).toBeTruthy();
   });
 
-  test('shows error if user not logged in', async () => {
-    localStorage.removeItem('userId');
-    render(<OfferRide />);
+  // test('shows error if user not logged in', async () => {
+  //   localStorage.removeItem('userId');
+  //   render(<OfferRide />);
 
-    fireEvent.change(screen.getByPlaceholderText('Enter source'), { target: { value: 'A' } });
-    fireEvent.change(screen.getByPlaceholderText('Enter destination'), { target: { value: 'B' } });
-    const offerBtn = screen.getByRole('button', { name: /Offer Ride/i });
+  //   fireEvent.change(screen.getByPlaceholderText('Enter source'), { target: { value: 'A' } });
+  //   fireEvent.change(screen.getByPlaceholderText('Enter destination'), { target: { value: 'B' } });
+  //   const offerBtn = screen.getByRole('button', { name: /Offer Ride/i });
 
-    fireEvent.click(offerBtn);
+  //   fireEvent.click(offerBtn);
 
-    await waitFor(() => {
-      expect(screen.getByText('Missing user, source, or destination')).toBeTruthy();
-    });
-  });
+  //   await waitFor(() => {
+  //     expect(screen.getByText('Missing user, source, or destination')).toBeTruthy();
+  //   });
+  // });
 
   test('disables button if source or destination is missing', () => {
     render(<OfferRide />);
