@@ -26,6 +26,7 @@ function OfferRide() {
         const script = document.createElement('script');
         script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
         script.async = true;
+        script.defer = true; // Ensure script execution is deferred
         script.onload = () => {
           initMap();
           initAutocomplete();
@@ -52,7 +53,7 @@ function OfferRide() {
       const autocomplete = new window.google.maps.places.Autocomplete(sourceInputRef.current);
       autocomplete.addListener('place_changed', () => {
         const place = autocomplete.getPlace();
-        if (place && place.formatted_address) {
+        if (place?.formatted_address) {
           setSource(place.formatted_address);
         }
       });
@@ -62,7 +63,7 @@ function OfferRide() {
       const autocomplete = new window.google.maps.places.Autocomplete(destInputRef.current);
       autocomplete.addListener('place_changed', () => {
         const place = autocomplete.getPlace();
-        if (place && place.formatted_address) {
+        if (place?.formatted_address) {
           setDestination(place.formatted_address);
         }
       });
@@ -138,24 +139,27 @@ function OfferRide() {
     <div className="offer-ride-container" style={{ maxWidth: 600, margin: 'auto', padding: '1rem' }}>
       <h2>Offer a Ride</h2>
 
-      <label>Source</label>
+      <label htmlFor="source-input">Source</label>
       <input
+        id="source-input"
         ref={sourceInputRef}
         type="text"
         placeholder="Enter source"
         style={{ width: '100%', height: 40, marginBottom: 10, padding: '0 10px' }}
       />
 
-      <label>Destination</label>
+      <label htmlFor="destination-input">Destination</label>
       <input
+        id="destination-input"
         ref={destInputRef}
         type="text"
         placeholder="Enter destination"
         style={{ width: '100%', height: 40, marginBottom: 10, padding: '0 10px' }}
       />
 
-      <label>Seats Available</label>
+      <label htmlFor="seats-input">Seats Available</label>
       <input
+        id="seats-input"
         type="number"
         min={1}
         max={8}
