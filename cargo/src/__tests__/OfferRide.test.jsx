@@ -11,10 +11,10 @@ describe('OfferRide', () => {
 
   test('renders OfferRide form inputs', () => {
     render(<OfferRide />);
-    expect(screen.getByPlaceholderText(/Enter source/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/Enter destination/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Seats Available/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Offer Ride/i })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Enter source')).toBeTruthy();
+    expect(screen.getByPlaceholderText('Enter destination')).toBeTruthy();
+    expect(screen.getByLabelText('Seats Available')).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Offer Ride/i })).toBeTruthy();
   });
 
   test('shows error if user not logged in', async () => {
@@ -25,7 +25,7 @@ describe('OfferRide', () => {
     fireEvent.click(offerBtn);
 
     await waitFor(() => {
-      expect(screen.getByText(/Missing user, source, or destination/i)).toBeInTheDocument();
+      expect(screen.getByText('Missing user, source, or destination')).toBeTruthy();
     });
   });
 
