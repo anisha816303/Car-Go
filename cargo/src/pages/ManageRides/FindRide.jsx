@@ -179,7 +179,11 @@ function FindRide() {
           Show Map
         </button>
         <div className="map-preview" style={{ minHeight: 180, marginTop: 18 }}>
-          <div ref={mapRef} style={{ width: '100%', height: 300, borderRadius: 12, border: '1px solid #ccc' }} />
+          <div
+            ref={mapRef}
+            style={{ width: '100%', height: 300, borderRadius: 12, border: '1px solid #ccc' }}
+            alt="Map Preview"
+          />
         </div>
         <button type="button" style={{ marginTop: 18 }} disabled={!showMap} onClick={handleFindRide}>
           Find Ride
