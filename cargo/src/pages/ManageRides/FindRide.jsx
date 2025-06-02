@@ -8,7 +8,6 @@ function FindRide() {
   const [message, setMessage] = useState('');
   const [mapLoaded, setMapLoaded] = useState(false);
   const [filteredRides, setFilteredRides] = useState([]);
-  const [rides, setRides] = useState([]); // Ensure `setRides` is properly declared
   const mapRef = useRef(null);
   const sourceInputRef = useRef(null);
   const destInputRef = useRef(null);
@@ -102,7 +101,6 @@ function FindRide() {
   // Updated handleFindRide function to match rides using string comparison
   const handleFindRide = async () => {
     setMessage('');
-    setRides([]);
     setFilteredRides([]);
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/rides`);
@@ -115,7 +113,6 @@ function FindRide() {
           const filtered = data.filter(
             (ride) => ride.source === source && ride.destination === destination
           );
-          setRides(data);
           setFilteredRides(filtered);
           if (filtered.length === 0) setMessage('No matching rides found.');
         }
