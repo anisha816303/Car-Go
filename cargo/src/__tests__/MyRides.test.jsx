@@ -16,7 +16,7 @@ describe('MyRides', () => {
         <MyRides />
       </MemoryRouter>
     );
-    expect(screen.getByText(/My Rides/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /\+ Create Ride/i })).toBeInTheDocument();
+    expect(screen.getByText('My Rides')).toBeTruthy();
+    expect(screen.getByRole('button', { name: /\+ Create Ride/i })).toBeTruthy();
   });
 });
