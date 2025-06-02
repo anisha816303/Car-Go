@@ -15,8 +15,8 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 60px;
-  background: linear-gradient(90deg, #43a047 60%, #2d6cdf 100%);
+  height: 80px;
+  background: linear-gradient(135deg, #75e08b 0%, #b2f0e6 100%);
   color: white;
   display: flex;
   align-items: center;
@@ -32,13 +32,15 @@
   gap: 1rem;
   min-width: 180px;
   flex-shrink: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-style: bold;
 }
 
 .logo {
-  height: 40px;
-  width: 40px;
+  height: 80px;
+  width: 80px;
   object-fit: contain;
-  background: white;
+  background: linear-gradient(135deg, #75e08b 0%, #b2f0e6 100%);
   border-radius: 8px;
   padding: 2px;
 }
@@ -47,7 +49,7 @@
   margin: 0;
   font-size: 2rem;
   font-weight: 600;
-  color: white;
+  color: black;
   letter-spacing: 1px;
   white-space: nowrap;
 }
@@ -55,7 +57,7 @@
 .menu-toggle {
   background: none;
   border: none;
-  color: white;
+  color: black;
   font-size: 2rem;
   cursor: pointer;
   margin-right: 10px;
@@ -80,15 +82,17 @@
 }
 
 .nav-right {
+  padding-left: 20cm;
   display: flex;
   align-items: center;
   gap: 1.2rem;
+  color: black;
 }
 
 .nav-button {
   background: none;
   border: none;
-  color: white;
+  color: black;
   padding: 8px 18px;
   cursor: pointer;
   border-radius: 20px;
@@ -97,6 +101,7 @@
   align-items: center;
   gap: 0.5rem;
   transition: background 0.2s;
+  font-style: bold;
 }
 
 .nav-button:hover {
@@ -187,7 +192,7 @@
 .main-content {
   margin-left: 250px;
   margin-top: 60px;
-  padding: 2.5rem 2rem 2rem 2rem;
+  /* padding: 2.5rem 2rem 2rem 2rem; */
   transition: margin-left 0.3s;
 }
 
@@ -199,7 +204,7 @@
   text-align: center;
   font-size: 2.5rem;
   font-weight: 700;
-  color: #388e3c;
+  color: rgb(33, 33, 33);
   margin: 2.5rem 0 2rem 0;
 }
 
@@ -208,39 +213,40 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 2.5rem auto 2.5rem auto;
-  max-width: 750px;
-  min-height: 540px;
-  background: linear-gradient(135deg, #f8fafc 80%, #e3f0e8 100%);
+  flex-wrap: nowrap;
+  margin: 2rem auto;
+  max-width: 500px;
+ background: linear-gradient(135deg, #e0ffe6 0%, #b2f0e6 100%);
   border-radius: 24px;
   box-shadow: 0 8px 32px rgba(44, 167, 80, 0.10);
   position: relative;
-  padding: 2.5rem 2rem;
 }
 
+
 .carousel-card {
-  width: 440px;
-  background: #fff;
+  width: 100%;
+  max-width: 480px;
+  background: linear-gradient(135deg, #75e08b 0%, #b2f0e6 100%);
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(44, 167, 80, 0.10);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem 1.5rem 1.5rem 1.5rem;
-  min-height: 480px;
+  padding: 1.5rem;
   transition: box-shadow 0.2s, background 0.2s;
 }
 
 .carousel-card img {
   width: 100%;
-  height: 340px;
+  max-width: 420px;
+  height: auto;
   object-fit: contain;
-  border-radius: 14px;
-  margin-bottom: 1.2rem;
-  background: #e0e0e0;
-  box-shadow: 0 4px 18px rgba(44, 167, 80, 0.08);
-  padding: 12px 0 0 0;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  background: transparent;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
+
 
 .carousel-card-caption {
   text-align: center;
@@ -250,7 +256,7 @@
 .carousel-card-caption h3 {
   font-size: 1.35rem;
   font-weight: 700;
-  color: #2d6cdf;
+  color: black;
   margin-bottom: 0.5rem;
 }
 
@@ -261,30 +267,35 @@
 }
 
 .carousel-arrow {
-  background: linear-gradient(135deg, #4caf50 60%, #2d6cdf 100%);
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 54px;
-  height: 54px;
-  font-size: 2.2rem;
-  cursor: pointer;
-  margin: 0 1.5rem;
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(44, 167, 80, 0.13);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  outline: none;
-  position: relative;
-  z-index: 2;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
 }
+
+.carousel-arrow:first-of-type {
+  left: 10px;
+}
+
+.carousel-arrow:last-of-type {
+  right: 10px;
+}
+
 
 .carousel-arrow:hover {
   background: linear-gradient(135deg, #388e3c 60%, #174a8b 100%);
   transform: scale(1.12);
   box-shadow: 0 4px 16px rgba(44, 167, 80, 0.18);
 }
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.4s ease-in-out;
+  will-change: transform;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
 
 /* Info Section */
 .info-section {
@@ -302,10 +313,10 @@
 }
 
 .info-card {
-  background: linear-gradient(135deg, #a8e063 60%, #56ab2f 100%);
+   background: linear-gradient(135deg, #75e08b 0%, #b2f0e6 100%);
   padding: 2rem 1.5rem;
   border-radius: 18px;
-  color: #fff;
+  color: black;
   flex: 1 1 260px;
   min-width: 260px;
   max-width: 340px;
@@ -394,3 +405,5 @@
     font-size: 1rem;
   }
 }
+
+         

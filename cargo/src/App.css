@@ -54,3 +54,88 @@ body::after {
   0% { transform: translateY(0) scale(1);}
   100% { transform: translateY(-30px) scale(1.04);}
 }
+
+/* Floating bubbles */
+.bubble {
+  position: fixed;
+  border-radius: 50%;
+  opacity: 0.12;
+  z-index: 0;
+  pointer-events: none;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+/* Individual bubble styles */
+.bubble-green-1 {
+  width: 180px;
+  height: 180px;
+  background: #43a047;
+  top: 10%;
+  left: 5%;
+  animation: float1 20s;
+}
+
+.bubble-green-2 {
+  width: 140px;
+  height: 140px;
+  background: #66bb6a;
+  top: 60%;
+  left: 10%;
+  animation: float2 26s;
+}
+
+.bubble-blue-1 {
+  width: 160px;
+  height: 160px;
+  background: #2d6cdf;
+  top: 30%;
+  right: 8%;
+  animation: float3 24s;
+}
+
+.bubble-blue-2 {
+  width: 100px;
+  height: 100px;
+  background: #64b5f6;
+  bottom: 20%;
+  right: 20%;
+  animation: float4 28s;
+}
+
+.bubble-yellow-1 {
+  width: 130px;
+  height: 130px;
+  background: #ffee58;
+  bottom: 5%;
+  left: 30%;
+  animation: float5 22s;
+}
+
+/* Keyframe animations */
+@keyframes float1 {
+  0%   { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-30px) scale(1.08); }
+}
+
+@keyframes float2 {
+  0%   { transform: translateY(0) scale(1); }
+  100% { transform: translateY(40px) scale(1.05); }
+}
+
+@keyframes float3 {
+  0%   { transform: translateX(0) scale(1); }
+  100% { transform: translateX(-25px) scale(1.07); }
+}
+
+@keyframes float4 {
+  0%   { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-20px) scale(1.03); }
+}
+
+@keyframes float5 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(25px, -20px) scale(1.1); }
+}
+
