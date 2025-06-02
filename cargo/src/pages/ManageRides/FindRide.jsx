@@ -8,6 +8,7 @@ function FindRide() {
   const [message, setMessage] = useState('');
   const [mapLoaded, setMapLoaded] = useState(false);
   const [filteredRides, setFilteredRides] = useState([]);
+  const [rides, setRides] = useState([]); // Ensure `setRides` is properly declared
   const mapRef = useRef(null);
   const sourceInputRef = useRef(null);
   const destInputRef = useRef(null);
