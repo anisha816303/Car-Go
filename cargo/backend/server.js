@@ -6,6 +6,7 @@ import User from './models/User.js'; // Using ES Module import syntax
 import client from 'prom-client';
 import Ride from './models/rides.js';
 import Vehicle from './models/Vehicle.js'; // Import the Vehicle model
+import RideBooked from './models/RidesBooked.js'; // Import the RideBooked model
 import multer from 'multer';
 dotenv.config();
 
@@ -20,6 +21,7 @@ mongoose.connect(process.env.MONGODB_URI)
         await User.init();
         await Ride.init();
         await Vehicle.init(); 
+        await RideBooked.init();
     })
     .catch((err) => console.log('MongoDB connection error:', err));
 
@@ -63,6 +65,7 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ error: 'Login failed' });
     }
 });
+
 app.post('/rides', async (req, res) => {
     const { source, destination, user } = req.body; // user should be a User _id
     try {
@@ -76,6 +79,7 @@ app.post('/rides', async (req, res) => {
         res.status(500).json({ error: 'Failed to create ride' });
     }
 });
+
 // Find rides by source and destination
 app.get('/rides', async (req, res) => {
     const { source, destination } = req.query;
@@ -89,6 +93,128 @@ app.get('/rides', async (req, res) => {
     } catch (err) {
         console.error('Error fetching rides:', err);
         res.status(500).json({ error: 'Failed to fetch rides' });
+    }
+});
+
+// Book a ride endpoint
+app.post('/book-ride', async (req, res) => {
+    const { rideId, userId, driverId, seatsBooked = 1 } = req.body;
+    
+    try {
+        // Validate required fields
+        if (!rideId || !userId || !driverId) {
+            return res.status(400).json({ error: 'Missing required fields: rideId, userId, or driverId' });
+        }
+
+        // Check if the ride exists
+        const ride = await Ride.findById(rideId);
+        if (!ride) {
+            return res.status(404).json({ error: 'Ride not found' });
+        }
+
+        // Check if user exists
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Check if driver exists
+        const driver = await User.findById(driverId);
+        if (!driver) {
+            return res.status(404).json({ error: 'Driver not found' });
+        }
+
+        // Prevent users from booking their own rides
+        if (userId === driverId) {
+            return res.status(400).json({ error: 'You cannot book your own ride' });
+        }
+
+        // Check if user has already booked this ride
+        const existingBooking = await RideBooked.findOne({ 
+            ride: rideId, 
+            user: userId 
+        });
+        
+        if (existingBooking) {
+            return res.status(409).json({ error: 'You have already booked this ride' });
+        }
+
+        // Create new booking
+        const newBooking = new RideBooked({
+            ride: rideId,
+            user: userId,
+            driver: driverId,
+            seatsBooked: seatsBooked
+        });
+
+        await newBooking.save();
+        console.log('New ride booking created:', newBooking);
+
+        res.status(201).json({ 
+            bookingId: newBooking._id, 
+            message: 'Ride booked successfully',
+            booking: newBooking
+        });
+
+    } catch (err) {
+        console.error('Error booking ride:', err);
+        res.status(500).json({ error: 'Failed to book ride' });
+    }
+});
+
+// Get all bookings for a user (as passenger)
+app.get('/user/:id/bookings', async (req, res) => {
+    try {
+        const bookings = await RideBooked.find({ user: req.params.id })
+            .populate('ride')
+            .populate('driver', 'fname lname username')
+            .populate('user', 'fname lname username')
+            .sort({ bookedAt: -1 }); // Most recent first
+        
+        res.status(200).json(bookings);
+    } catch (err) {
+        console.error('Error fetching user bookings:', err);
+        res.status(500).json({ error: 'Failed to fetch user bookings' });
+    }
+});
+
+// Get all bookings for rides offered by a user (as driver)
+app.get('/user/:id/ride-bookings', async (req, res) => {
+    try {
+        const bookings = await RideBooked.find({ driver: req.params.id })
+            .populate('ride')
+            .populate('user', 'fname lname username')
+            .sort({ bookedAt: -1 }); // Most recent first
+        
+        res.status(200).json(bookings);
+    } catch (err) {
+        console.error('Error fetching ride bookings:', err);
+        res.status(500).json({ error: 'Failed to fetch ride bookings' });
+    }
+});
+
+// Cancel a booking
+app.delete('/bookings/:bookingId', async (req, res) => {
+    try {
+        const { bookingId } = req.params;
+        const { userId } = req.body; // User making the cancellation request
+        
+        const booking = await RideBooked.findById(bookingId);
+        if (!booking) {
+            return res.status(404).json({ error: 'Booking not found' });
+        }
+
+        // Only allow the user who made the booking to cancel it
+        if (booking.user.toString() !== userId) {
+            return res.status(403).json({ error: 'You can only cancel your own bookings' });
+        }
+
+        await RideBooked.findByIdAndDelete(bookingId);
+        res.status(200).json({ message: 'Booking cancelled successfully' });
+        
+    } catch (err) {
+        console.error('Error cancelling booking:', err);
+        res.status(500).json({ error: 'Failed to cancel booking' });
     }
 });
 

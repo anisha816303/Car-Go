@@ -47,20 +47,18 @@ function Dashboard() {
           <img src="/assets/logo.png" alt="Car-Go Logo" className="logo" />
           <h2>Car-Go</h2>
         </div>
-        <div className="nav-center">
-          <input 
-            type="text" 
-            placeholder="Search rides..." 
-            className="search-bar"
-          />
-        </div>
+       
         <div className="nav-right">
-          <button className="nav-button">
+          <div className="nav-center nav-links">
+  <button className="nav-button" onClick={() => navigate('/find-ride')}>🚗 Find Rides</button>
+  <button className="nav-button" onClick={() => navigate('/offer-ride')}>📍 Offer Rides</button>
+          <button  onClick={() => navigate('/my-profile')} className="nav-button">
             👤 <span>Profile</span>
           </button>
           <button className="nav-button theme-toggle" onClick={toggleTheme}>
             {darkTheme ? '🌞' : '🌙'}
           </button>
+        </div>
         </div>
       </nav>
 
@@ -100,6 +98,15 @@ function Dashboard() {
       </div>
       {/* Main Content */}
       <main className={`main-content ${!sidebarOpen ? 'shifted' : ''}`}>
+      
+<div className="bubble bubble-green-1"></div>
+<div className="bubble bubble-green-2"></div>
+<div className="bubble bubble-blue-1"></div>
+<div className="bubble bubble-blue-2"></div>
+<div className="bubble bubble-yellow-1"></div>
+
+
+
         <h1 className="welcome-message">Welcome to Car-Go Dashboard</h1>
         <div className="card-carousel-container">
           <button className="carousel-arrow left" onClick={prevCard}>&lt;</button>

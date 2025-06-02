@@ -9,12 +9,14 @@ function FindRide() {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [filteredRides, setFilteredRides] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [bookingLoading, setBookingLoading] = useState({});
   const mapRef = useRef(null);
   const sourceInputRef = useRef(null);
   const destInputRef = useRef(null);
   const mapInstance = useRef(null);
   const directionsRenderer = useRef(null);
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+  const userId = localStorage.getItem('userId');
 
   // Load Google Maps script asynchronously with defer
   useEffect(() => {
@@ -133,6 +135,55 @@ function FindRide() {
     );
   };
 
+  // Function to book a ride
+  const handleBookRide = async (ride) => {
+    if (!userId) {
+      setMessage('Please log in to book a ride.');
+      return;
+    }
+
+    if (ride.user._id === userId) {
+      setMessage('You cannot book your own ride.');
+      return;
+    }
+
+    setBookingLoading(prev => ({ ...prev, [ride._id]: true }));
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/book-ride`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          rideId: ride._id,
+          userId: userId,
+          driverId: ride.user._id,
+          seatsBooked: 1 // Default to 1 seat, can be made configurable
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        setMessage(`Ride booked successfully! Booking ID: ${data.bookingId}`);
+        // Optionally refresh the rides list or mark this ride as booked
+        setFilteredRides(prev => 
+          prev.map(r => 
+            r._id === ride._id 
+              ? { ...r, isBooked: true }
+              : r
+          )
+        );
+      } else {
+        setMessage(data.error || 'Failed to book ride.');
+      }
+    } catch (err) {
+      console.error('Error booking ride:', err);
+      setMessage('Server error. Please try again.');
+    }
+
+    setBookingLoading(prev => ({ ...prev, [ride._id]: false }));
+  };
+
   // Function to calculate if a point is along a route within a threshold
   const isPointAlongRoute = async (point, routeStart, routeEnd, thresholdKm = 5) => {
     return new Promise((resolve) => {
@@ -241,7 +292,6 @@ function FindRide() {
         }
 
         setFilteredRides(matchingRides);
-        console.log('Matching rides:', matchingRides);
         if (matchingRides.length === 0) {
           setMessage('No compatible rides found along your route.');
         }
@@ -406,6 +456,7 @@ function FindRide() {
             border: '1px solid #ccc',
             marginBottom: '1rem'
           }}
+          alt ="Map Preview"
         />
 
         {/* Messages */}
@@ -454,11 +505,40 @@ function FindRide() {
                     color: ride.matchType === 'Exact match' ? '#155724' : '#856404',
                     borderRadius: '4px',
                     fontSize: '12px',
-                    fontWeight: 'bold'
-                    
+                    fontWeight: 'bold',
+                    marginRight: '10px'
                   }}>
                     {ride.matchType}
                   </div>
+                  <button
+                    onClick={() => handleBookRide(ride)}
+                    disabled={bookingLoading[ride._id] || ride.isBooked || ride.user._id === userId}
+                    style={{
+                      padding: '8px 16px',
+                      backgroundColor: ride.isBooked 
+                        ? '#6c757d' 
+                        : ride.user._id === userId 
+                          ? '#dc3545' 
+                          : '#28a745',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: (bookingLoading[ride._id] || ride.isBooked || ride.user._id === userId) 
+                        ? 'not-allowed' 
+                        : 'pointer',
+                      fontSize: '12px',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    {bookingLoading[ride._id] 
+                      ? 'Booking...' 
+                      : ride.isBooked 
+                        ? 'Already Booked'
+                        : ride.user._id === userId
+                          ? 'Your Ride'
+                          : 'Book Ride'
+                    }
+                  </button>
                 </div>
               ))}
             </div>
