@@ -8,8 +8,8 @@ describe('FindRide', () => {
     render(<FindRide />);
     expect(screen.getByPlaceholderText('Enter source or use autodetect')).toBeTruthy();
     expect(screen.getByPlaceholderText('Enter destination')).toBeTruthy();
-    expect(screen.getByRole('button', { name: /Show Map/i })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /Find Ride/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Show Route/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Find Compatible Ride/i })).toBeTruthy();
   });
 
   test('shows map image preview when source and destination are filled', async () => {
