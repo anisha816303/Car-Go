@@ -24,6 +24,7 @@ function Dashboard() {
   const [darkTheme, setDarkTheme] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [current, setCurrent] = useState(0);
+ 
   const navigate = useNavigate();
 
   const toggleTheme = () => {
@@ -36,6 +37,33 @@ function Dashboard() {
 
   const nextCard = () => setCurrent((current + 1) % cardData.length);
   const prevCard = () => setCurrent((current - 1 + cardData.length) % cardData.length);
+
+  // --- Real backend integration for offered and booked rides ---
+  const [offeredRides, setOfferedRides] = useState([]);
+  const [bookedRides, setBookedRides] = useState([]);
+  const userId = localStorage.getItem('userId');
+
+  React.useEffect(() => {
+    if (!userId) return;
+    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/user/${userId}/rides`)
+      .then(res => res.json())
+      .then(data => {
+        setOfferedRides(data);
+      })
+      .catch(() => {});
+  }, [userId]);
+
+  React.useEffect(() => {
+    if (!userId) return;
+    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/user/${userId}/bookings`)
+      .then(res => res.json())
+      .then(data => {
+        setBookedRides(data);
+      })
+      .catch(() => {});
+  }, [userId]);
+
+  // --- End real backend integration ---
 
   return (
     <div className={`dashboard ${darkTheme ? 'dark' : 'light'}`}>
@@ -108,6 +136,33 @@ function Dashboard() {
 
 
         <h1 className="welcome-message">Welcome to Car-Go Dashboard</h1>
+        {/* --- Recent Rides Section --- */}
+        <div className="dashboard-recent-ride-box wide">
+          <h2 className="recent-ride-title">Recent Rides</h2>
+          {(!offeredRides.length && !bookedRides.length) ? (
+            <div className="empty-box">No rides offered or booked yet.</div>
+          ) : (
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, width: '100%' }}>
+              {offeredRides.length > 0 && (
+                <li className="dashboard-ride-card dashboard-ride-offered">
+                  <div className="recent-ride-main-row">
+                    <span><strong>{offeredRides[0].source}</strong> → <strong>{offeredRides[0].destination}</strong></span>
+                    <span className="recent-ride-label">Offered</span>
+                  </div>
+                </li>
+              )}
+              {bookedRides.length > 0 && (
+                <li className="dashboard-ride-card dashboard-ride-booked">
+                  <div className="recent-ride-main-row">
+                    <span><strong>{bookedRides[0].ride?.source}</strong> → <strong>{bookedRides[0].ride?.destination}</strong></span>
+                    <span className="recent-ride-label">Booked</span>
+                  </div>
+                </li>
+              )}
+            </ul>
+          )}
+        </div>
+        {/* --- End Recent Rides Section --- */}
         <div className="card-carousel-container">
           <button className="carousel-arrow left" onClick={prevCard}>&lt;</button>
           <div className="carousel-card">
@@ -119,6 +174,7 @@ function Dashboard() {
           </div>
           <button className="carousel-arrow right" onClick={nextCard}>&gt;</button>
         </div>
+        {/* Info Section */}
         <section className="info-section">
           <div className="info-cards">
             <div className="info-card">

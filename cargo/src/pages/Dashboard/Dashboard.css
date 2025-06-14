@@ -192,7 +192,7 @@
 .main-content {
   margin-left: 250px;
   margin-top: 60px;
-  /* padding: 2.5rem 2rem 2rem 2rem; */
+
   transition: margin-left 0.3s;
 }
 
@@ -217,8 +217,8 @@
   justify-content: center;
   flex-wrap: nowrap;
   margin: 2rem auto;
-  max-width: 500px;
- background: linear-gradient(135deg, #e0ffe6 0%, #b2f0e6 100%);
+  max-width: 900px; /* Restored to a larger, more natural size */
+  background: linear-gradient(135deg, #e0ffe6 0%, #b2f0e6 100%);
   border-radius: 24px;
   box-shadow: 0 8px 32px rgba(44, 167, 80, 0.10);
   position: relative;
@@ -227,7 +227,7 @@
 
 .carousel-card {
   width: 100%;
-  max-width: 480px;
+  max-width: 860px; /* Restored to match container */
   background: linear-gradient(135deg, #75e08b 0%, #b2f0e6 100%);
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(44, 167, 80, 0.10);
@@ -241,7 +241,7 @@
 
 .carousel-card img {
   width: 100%;
-  max-width: 420px;
+  max-width: 800px; /* Restored to a larger size */
   height: auto;
   object-fit: contain;
   border-radius: 12px;
@@ -272,26 +272,41 @@
 }
 
 .carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
+  background: linear-gradient(135deg, #4caf50 60%, #2d6cdf 100%);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 54px;
+  height: 54px;
+  font-size: 2.2rem;
+  cursor: pointer;
+  margin: 0 1.5rem;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(44, 167, 80, 0.13);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  position: relative;
+  z-index: 2;
 }
-
-.carousel-arrow:first-of-type {
-  left: 10px;
-}
-
-.carousel-arrow:last-of-type {
-  right: 10px;
-}
-
 
 .carousel-arrow:hover {
   background: linear-gradient(135deg, #388e3c 60%, #174a8b 100%);
-  transform: scale(1.15);
-  box-shadow: 0 8px 32px rgba(44, 167, 80, 0.22);
+  transform: scale(1.12);
+  box-shadow: 0 4px 16px rgba(44, 167, 80, 0.18);
 }
+
+.carousel-arrow:first-of-type {
+  left: unset;
+  right: unset;
+}
+
+.carousel-arrow:last-of-type {
+  left: unset;
+  right: unset;
+}
+
 
 .carousel-track {
   display: flex;
@@ -357,7 +372,129 @@
   color: #f3f3f3;
 }
 
-/* Responsive adjustments */
+/* Recent Ride Box */
+.dashboard-recent-ride-box {
+  background: linear-gradient(135deg, #75e08b 0%, #b2f0e6 100%);
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(44, 167, 80, 0.13);
+  padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+  margin: 0 auto 2.5rem auto;
+  max-width: 1100px;
+  min-width: 260px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dashboard-recent-ride-box.wide {
+  max-width: 1100px;
+  width: 98%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dashboard-recent-ride-box ul {
+  width: 100%;
+}
+
+.recent-ride-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.5px;
+}
+
+.recent-ride-label {
+  background: #fff;
+  color: #43a047;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 2px 14px;
+  margin-left: 18px;
+  border: 1px solid #b2f0e6;
+  box-shadow: 0 2px 8px rgba(44,167,80,0.07);
+}
+
+.recent-ride-main-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.18rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.recent-ride-details-row {
+  display: flex;
+  gap: 2.2rem;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 1.08rem;
+  color: #333;
+  margin-left: 2px;
+  margin-bottom: 2px;
+}
+
+.dashboard-ride-card .recent-ride-details-row span {
+  background: rgba(255,255,255,0.7);
+  border-radius: 10px;
+  padding: 2px 12px;
+  margin-right: 8px;
+  color: #222;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(44,167,80,0.06);
+}
+
+.recent-ride-btn {
+  border-radius: 16px;
+  padding: 6px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+.recent-ride-btn.update {
+  background: #1976d2;
+  color: #fff;
+}
+.recent-ride-btn.delete {
+  background: #d32f2f;
+  color: #fff;
+}
+.recent-ride-btn.cancel {
+  background: #bdbdbd;
+  color: #333;
+}
+.recent-ride-btn.update:hover {
+  background: #1565c0;
+}
+.recent-ride-btn.delete:hover {
+  background: #b71c1c;
+}
+.recent-ride-btn.cancel:hover {
+  background: #888;
+  color: #fff;
+}
+.recent-ride-edit-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+.recent-ride-edit-form input {
+  border-radius: 8px;
+  padding: 4px 8px;
+  border: 1px solid #bbb;
+  font-size: 1rem;
+  min-width: 90px;
+}
 @media (max-width: 1200px) {
   .card-carousel-container {
     max-width: 99vw;
@@ -366,11 +503,18 @@
   .carousel-card {
     width: 90vw;
     min-height: 320px;
+    max-width: 98vw;
     padding: 1.5rem 0.5rem;
   }
   .carousel-card img {
     max-width: 90vw;
     height: 200px;
+  }
+  .dashboard-recent-ride-box,
+  .dashboard-recent-ride-box.wide {
+    max-width: 99vw;
+    width: 99vw;
+    padding: 1rem 0.5rem;
   }
 }
 
@@ -383,10 +527,18 @@
   .carousel-card {
     width: 99vw;
     min-height: 180px;
+    max-width: 99vw;
     padding: 1rem 0.2rem;
   }
   .carousel-card img {
+    max-width: 99vw;
     height: 120px;
+  }
+  .dashboard-recent-ride-box,
+  .dashboard-recent-ride-box.wide {
+    max-width: 99vw;
+    width: 99vw;
+    padding: 0.7rem 0.1rem;
   }
 }
 
@@ -398,9 +550,11 @@
   .carousel-card {
     width: 99vw;
     min-height: 80px;
+    max-width: 99vw;
     padding: 0.5rem 0.1rem;
   }
   .carousel-card img {
+    max-width: 99vw;
     height: 60px;
   }
   .info-card {
@@ -408,22 +562,32 @@
     max-width: 98vw;
     padding: 1.2rem 0.5rem;
   }
-}
-
-@media (max-width: 1100px) {
-  .info-cards {
-    flex-direction: row;
-    gap: 1.5rem;
-    align-items: center;
+  .dashboard-recent-ride-box {
+    max-width: 98vw;
+    padding: 1rem 0.3rem;
   }
-}
-
-@media (max-width: 900px) {
-  .info-cards {
+  .recent-ride-main-row {
     flex-direction: column;
-    gap: 1.2rem;
-    align-items: center;
+    align-items: flex-start;
+    gap: 0.2rem;
+    font-size: 1.05rem;
+  }
+  .recent-ride-details-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    font-size: 0.98rem;
+  }
+  .recent-ride-edit-form {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .recent-ride-btn {
+    width: 100%;
+    margin-bottom: 4px;
   }
 }
 
-         
+
+
