@@ -1,5 +1,9 @@
 {
   "devDependencies": {
     "eslint": "^9.28.0"
+  },
+  "dependencies": {
+    "brace-expansion": "^4.0.1",
+    "multer": "^2.0.1"
   }
 }
