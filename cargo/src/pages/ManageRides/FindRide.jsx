@@ -184,51 +184,95 @@ function FindRide() {
     setBookingLoading(prev => ({ ...prev, [ride._id]: false }));
   };
 
+  // Helper for geocode callback
+  function handleGeocodeCallback(results, geocodeStatus, result, thresholdKm, resolve) {
+    if (geocodeStatus !== 'OK' || !results[0]) {
+      resolve(false);
+      return;
+    }
+
+    const pointLatLng = results[0].geometry.location;
+    const route = result.routes[0];
+    const path = route.overview_path;
+
+    // Check if point is within threshold distance of any point on the route
+    let minDistance = Infinity;
+    for (const pathPoint of path) {
+      const distance = window.google.maps.geometry.spherical.computeDistanceBetween(
+        pointLatLng,
+        pathPoint
+      );
+      minDistance = Math.min(minDistance, distance);
+    }
+
+    // Convert threshold from km to meters
+    const thresholdMeters = thresholdKm * 1000;
+    resolve(minDistance <= thresholdMeters);
+  }
+
+  // Helper for directions callback
+  function handleDirectionsCallback(result, status, point, thresholdKm, resolve) {
+    if (status !== 'OK') {
+      resolve(false);
+      return;
+    }
+
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode(
+      { address: point },
+      (results, geocodeStatus) => handleGeocodeCallback(results, geocodeStatus, result, thresholdKm, resolve)
+    );
+  }
+
   // Function to calculate if a point is along a route within a threshold
   const isPointAlongRoute = async (point, routeStart, routeEnd, thresholdKm = 5) => {
     return new Promise((resolve) => {
       const directionsService = new window.google.maps.DirectionsService();
-      
       directionsService.route(
         {
           origin: routeStart,
           destination: routeEnd,
           travelMode: window.google.maps.TravelMode.DRIVING,
         },
-        (result, status) => {
-          if (status !== 'OK') {
-            resolve(false);
-            return;
-          }
-
-          const geocoder = new window.google.maps.Geocoder();
-          geocoder.geocode({ address: point }, (results, geocodeStatus) => {
-            if (geocodeStatus !== 'OK' || !results[0]) {
-              resolve(false);
-              return;
-            }
-
-            const pointLatLng = results[0].geometry.location;
-            const route = result.routes[0];
-            const path = route.overview_path;
-
-            // Check if point is within threshold distance of any point on the route
-            let minDistance = Infinity;
-            for (let i = 0; i < path.length; i++) {
-              const distance = window.google.maps.geometry.spherical.computeDistanceBetween(
-                pointLatLng,
-                path[i]
-              );
-              minDistance = Math.min(minDistance, distance);
-            }
-
-            // Convert threshold from km to meters
-            const thresholdMeters = thresholdKm * 1000;
-            resolve(minDistance <= thresholdMeters);
-          });
-        }
+        (result, status) => handleDirectionsCallback(result, status, point, thresholdKm, resolve)
       );
     });
+  };
+
+  // Helper to check if a ride matches the user's source and destination
+  const checkRideMatch = async (ride, source, destination) => {
+    // Exact match
+    if (ride.source === source && ride.destination === destination) {
+      return { isMatch: true, matchType: 'Exact match' };
+    }
+    // Check if user's source and destination are along the ride's route
+    try {
+      const sourceAlongRoute = await isPointAlongRoute(source, ride.source, ride.destination);
+      const destAlongRoute = await isPointAlongRoute(destination, ride.source, ride.destination);
+      if (sourceAlongRoute && destAlongRoute) {
+        // Verify that source comes before destination on the route
+        const sourceToRideEnd = await getRouteDistance(source, ride.destination);
+        const destToRideEnd = await getRouteDistance(destination, ride.destination);
+        if (sourceToRideEnd > destToRideEnd) {
+          return { isMatch: true, matchType: 'Along route' };
+        }
+      }
+    } catch (error) {
+      console.error('Error checking route compatibility:', error);
+    }
+    return { isMatch: false, matchType: '' };
+  };
+
+  // Helper to filter and match rides
+  const getMatchingRides = async (rides, source, destination) => {
+    const matchingRides = [];
+    for (const ride of rides) {
+      const { isMatch, matchType } = await checkRideMatch(ride, source, destination);
+      if (isMatch) {
+        matchingRides.push({ ...ride, matchType });
+      }
+    }
+    return matchingRides;
   };
 
   // Enhanced ride matching function
@@ -245,7 +289,7 @@ function FindRide() {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/rides`);
       const data = await res.json();
-      
+
       if (res.ok) {
         if (data.length === 0) {
           setMessage('No rides found.');
@@ -253,43 +297,7 @@ function FindRide() {
           return;
         }
 
-        const matchingRides = [];
-
-        // Check each ride for compatibility
-        for (const ride of data) {
-          let isMatch = false;
-          let matchType = '';
-
-          // Exact match
-          if (ride.source === source && ride.destination === destination) {
-            isMatch = true;
-            matchType = 'Exact match';
-          }
-          // Check if user's source and destination are along the ride's route
-          else {
-            try {
-              const sourceAlongRoute = await isPointAlongRoute(source, ride.source, ride.destination);
-              const destAlongRoute = await isPointAlongRoute(destination, ride.source, ride.destination);
-              
-              if (sourceAlongRoute && destAlongRoute) {
-                // Verify that source comes before destination on the route
-                const sourceToRideEnd = await getRouteDistance(source, ride.destination);
-                const destToRideEnd = await getRouteDistance(destination, ride.destination);
-                
-                if (sourceToRideEnd > destToRideEnd) {
-                  isMatch = true;
-                  matchType = 'Along route';
-                }
-              }
-            } catch (error) {
-              console.error('Error checking route compatibility:', error);
-            }
-          }
-
-          if (isMatch) {
-            matchingRides.push({ ...ride, matchType });
-          }
-        }
+        const matchingRides = await getMatchingRides(data, source, destination);
 
         setFilteredRides(matchingRides);
         if (matchingRides.length === 0) {
@@ -478,7 +486,16 @@ function FindRide() {
           <div className='ride-results'>
             <h3>Compatible Rides Found ({filteredRides.length})</h3>
             <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-              {filteredRides.map(ride => (
+              {filteredRides.map(ride => {
+                let buttonBgColor;
+                if (ride.isBooked) {
+                  buttonBgColor = '#6c757d';
+                } else if (ride.user._id === userId) {
+                  buttonBgColor = '#dc3545';
+                } else {
+                  buttonBgColor = '#28a745';
+                }
+                return (
                 <div 
                   key={ride._id}
                   style={{
@@ -510,37 +527,40 @@ function FindRide() {
                   }}>
                     {ride.matchType}
                   </div>
-                  <button
-                    onClick={() => handleBookRide(ride)}
-                    disabled={bookingLoading[ride._id] || ride.isBooked || ride.user._id === userId}
-                    style={{
-                      padding: '8px 16px',
-                      backgroundColor: ride.isBooked 
-                        ? '#6c757d' 
-                        : ride.user._id === userId 
-                          ? '#dc3545' 
-                          : '#28a745',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: (bookingLoading[ride._id] || ride.isBooked || ride.user._id === userId) 
-                        ? 'not-allowed' 
-                        : 'pointer',
-                      fontSize: '12px',
-                      fontWeight: 'bold'
-                    }}
-                  >
-                    {bookingLoading[ride._id] 
-                      ? 'Booking...' 
-                      : ride.isBooked 
-                        ? 'Already Booked'
-                        : ride.user._id === userId
-                          ? 'Your Ride'
-                          : 'Book Ride'
+                  {(() => {
+                    let buttonLabel;
+                    if (bookingLoading[ride._id]) {
+                      buttonLabel = 'Booking...';
+                    } else if (ride.isBooked) {
+                      buttonLabel = 'Already Booked';
+                    } else if (ride.user._id === userId) {
+                      buttonLabel = 'Your Ride';
+                    } else {
+                      buttonLabel = 'Book Ride';
                     }
-                  </button>
+                    return (
+                      <button
+                        onClick={() => handleBookRide(ride)}
+                        disabled={bookingLoading[ride._id] || ride.isBooked || ride.user._id === userId}
+                        style={{
+                          padding: '8px 16px',
+                          backgroundColor: buttonBgColor,
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '4px',
+                          cursor: (bookingLoading[ride._id] || ride.isBooked || ride.user._id === userId) 
+                            ? 'not-allowed' 
+                            : 'pointer',
+                          fontSize: '12px',
+                          fontWeight: 'bold'
+                        }}
+                      >
+                        {buttonLabel}
+                      </button>
+                    );
+                  })()}
                 </div>
-              ))}
+              )})}
             </div>
           </div>
         )}

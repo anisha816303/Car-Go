@@ -176,12 +176,12 @@ function MyRides() {
         <form onSubmit={handleEditSubmit} style={{ background: '#333', padding: 18, borderRadius: 12, marginBottom: 18 }}>
           <h4>Edit Ride</h4>
           <div>
-            <label>Source:</label>
-            <input value={editSource} onChange={e => setEditSource(e.target.value)} required style={{ marginLeft: 8 }} />
+            <label htmlFor="edit-source">Source:</label>
+            <input id="edit-source" value={editSource} onChange={e => setEditSource(e.target.value)} required style={{ marginLeft: 8 }} />
           </div>
           <div style={{ marginTop: 8 }}>
-            <label>Destination:</label>
-            <input value={editDestination} onChange={e => setEditDestination(e.target.value)} required style={{ marginLeft: 8 }} />
+            <label htmlFor="edit-destination">Destination:</label>
+            <input id="edit-destination" value={editDestination} onChange={e => setEditDestination(e.target.value)} required style={{ marginLeft: 8 }} />
           </div>
           <button type="submit" style={{ marginTop: 12, marginRight: 8, borderRadius: 18, padding: '6px 18px', background: '#1976d2', color: '#fff', border: 'none', cursor: 'pointer' }}>
             Save
